@@ -28,7 +28,7 @@ spec:
       - path: ksonnet-guestbook
         exclude: true
       - path: sync-waves
-        exclude: false
+        exclude: true
   template:
     metadata:
       name: '{{.path.basename}}'
