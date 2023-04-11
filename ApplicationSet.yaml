@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook-apps-only
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - git:
+      repoURL: https://github.com/seventieskid/argocd-example-apps.git
+      revision: HEAD
+      directories:
+      - path: "*"
+      - path: plugins
+        exclude: true
+      - path: sock-shop
+        exclude: true
+      - path: apps
+        exclude: true
+      - path: helm-dependency
+        exclude: true
+      - path: helm-hooks
+        exclude: true
+      - path: blue-green
+        exclude: true
+      - path: pre-post-sync
+        exclude: true
+      - path: sync-waves
+        exclude: true
+      - path: ksonnet-guestbook
+        exclude: true
+  template:
+    metadata:
+      name: '{{.path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/seventieskid/argocd-example-apps.git
+        targetRevision: HEAD
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.path.basename}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+        - CreateNamespace=true
