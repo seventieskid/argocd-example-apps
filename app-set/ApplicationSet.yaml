@@ -22,7 +22,7 @@ spec:
       - path: helm-hooks
         exclude: true
       - path: blue-green
-        exclude: true
+        exclude: false
       - path: pre-post-sync
         exclude: true
       - path: ksonnet-guestbook
